@@ -2,6 +2,7 @@ const fs = require('fs');
 const pool = require('../lib/utils/pool');
 const request = require('supertest');
 const app = require('../lib/app');
+const Recipe = require('../lib/models/recipe');
 
 describe('recipe-lab routes', () => {
   beforeEach(() => {
@@ -34,21 +35,21 @@ describe('recipe-lab routes', () => {
       });
   });
 
-  // it('gets all recipes', async() => {
-  //   const recipes = await Promise.all([
-  //     { name: 'cookies', directions: [] },
-  //     { name: 'cake', directions: [] },
-  //     { name: 'pie', directions: [] }
-  //   ].map(recipe => Recipe.insert(recipe)));
+  it('gets all recipes', async() => {
+    const recipes = await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
 
-  //   return request(app)
-  //     .get('/api/v1/recipes')
-  //     .then(res => {
-  //       recipes.forEach(recipe => {
-  //         expect(res.body).toContainEqual(recipe);
-  //       });
-  //     });
-  // });
+    return request(app)
+      .get('/api/v1/recipes')
+      .then(res => {
+        recipes.forEach(recipe => {
+          expect(res.body).toContainEqual(recipe);
+        });
+      });
+  });
   
   // // get recipe by id 
   // it('gets a recipe by id', async() => {
