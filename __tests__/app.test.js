@@ -68,41 +68,41 @@ describe('recipe-lab routes', () => {
     });
   });
 
-  // it('updates a recipe by id', async() => {
-  //   const recipe = await Recipe.insert({
-  //     name: 'cookies',
-  //     directions: [
-  //       'preheat oven to 375',
-  //       'mix ingredients',
-  //       'put dough on cookie sheet',
-  //       'bake for 10 minutes'
-  //     ],
-  //   });
+  it('updates a recipe by id', async() => {
+    const recipe = await Recipe.insert({
+      name: 'cookies',
+      directions: [
+        'preheat oven to 375',
+        'mix ingredients',
+        'put dough on cookie sheet',
+        'bake for 10 minutes'
+      ],
+    });
 
-  //   return request(app)
-  //     .put(`/api/v1/recipes/${recipe.id}`)
-  //     .send({
-  //       name: 'good cookies',
-  //       directions: [
-  //         'preheat oven to 375',
-  //         'mix ingredients',
-  //         'put dough on cookie sheet',
-  //         'bake for 10 minutes'
-  //       ]
-  //     })
-  //     .then(res => {
-  //       expect(res.body).toEqual({
-  //         id: expect.any(String),
-  //         name: 'good cookies',
-  //         directions: [
-  //           'preheat oven to 375',
-  //           'mix ingredients',
-  //           'put dough on cookie sheet',
-  //           'bake for 10 minutes'
-  //         ]
-  //       });
-  //     });
-  // });
+    return request(app)
+      .put(`/api/v1/recipes/${recipe.id}`)
+      .send({
+        name: 'good cookies',
+        directions: [
+          'preheat oven to 375',
+          'mix ingredients',
+          'put dough on cookie sheet',
+          'bake for 10 minutes'
+        ]
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+          name: 'good cookies',
+          directions: [
+            'preheat oven to 375',
+            'mix ingredients',
+            'put dough on cookie sheet',
+            'bake for 10 minutes'
+          ]
+        });
+      });
+  });
 
   // // delete a recipe by id 
   // it('deletes a recipe by id', async() => {
