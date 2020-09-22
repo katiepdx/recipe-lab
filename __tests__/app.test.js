@@ -112,13 +112,14 @@ describe('recipe-lab routes', () => {
       { name: 'pie', directions: [] }
     ].map(recipe => Recipe.insert(recipe)));
 
-    const response = await request(app)
-      .delete('/api/v1/recipes/2');
-    
-    expect(response.body).toEqual({
-      id: expect.any(String),
-      name: 'cake', 
-      directions: []
-    });
+    return request(app)
+      .delete('/api/v1/recipes/2')
+      .then(response => {
+        expect(response.body).toEqual({
+          id: expect.any(String),
+          name: 'cake', 
+          directions: []
+        });
+      });
   });
 });
