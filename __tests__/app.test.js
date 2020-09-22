@@ -104,21 +104,20 @@ describe('recipe-lab routes', () => {
       });
   });
 
-  // // delete a recipe by id 
-  // it('deletes a recipe by id', async() => {
-  //   await Promise.all([
-  //     { name: 'cookies', directions: [] },
-  //     { name: 'cake', directions: [] },
-  //     { name: 'pie', directions: [] }
-  //   ].map(recipe => Recipe.insert(recipe)));
+  it('deletes a recipe by id', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
 
-  //   const response = await request(app)
-  //     .delete('/api/v1/recipes/2');
+    const response = await request(app)
+      .delete('/api/v1/recipes/2');
     
-  //   expect(response.body).toEqual({
-  //     id: expect.any(String),
-  //     name: 'cake', 
-  //     directions: []
-  //   });
-  // });
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      name: 'cake', 
+      directions: []
+    });
+  });
 });
