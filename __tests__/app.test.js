@@ -58,14 +58,15 @@ describe('recipe-lab routes', () => {
       { name: 'pie', directions: [] }
     ].map(recipe => Recipe.insert(recipe)));
 
-    const response = await request(app)
-      .get('/api/v1/recipes/1');
-    
-    expect(response.body).toEqual({
-      id: expect.any(String),
-      name: 'cookies', 
-      directions: []
-    });
+    return request(app)
+      .get('/api/v1/recipes/1')
+      .then(response => {
+        expect(response.body).toEqual({
+          id: expect.any(String),
+          name: 'cookies', 
+          directions: []
+        });
+      });
   });
 
   it('updates a recipe by id', async() => {
