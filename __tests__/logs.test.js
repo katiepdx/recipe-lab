@@ -2,7 +2,6 @@ const fs = require('fs');
 const pool = require('../lib/utils/pool');
 const request = require('supertest');
 const app = require('../lib/app');
-// const Log = require('../lib/models/log');
 const Recipe = require('../lib/models/recipe');
 
 describe('Log model', () => {
@@ -43,14 +42,45 @@ describe('Log model', () => {
       { name: 'pie', directions: [] }
     ].map(recipe => Recipe.insert(recipe)));
     
-    return request(app)
+    await request(app)
       .post('/api/v1/logs')
-      .send(({
+      .send({
         date_of_event: 'Sept 22, 2020',
         notes: 'notes',
         rating: 5,
         recipe_id: '1'
-      }))
+      });
+    return await request(app)
+      .get('/api/v1/logs')
+      .then(res => {
+        expect(res.body[0]).toEqual({
+          id: expect.any(String),
+          date_of_event: 'Sept 22, 2020',
+          notes: 'notes',
+          rating: 5,
+          recipe_id: '1'
+        });
+      });
+  });
+
+  it('gets one log by id', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
+    
+    await request(app)
+      .post('/api/v1/logs')
+      .send({
+        date_of_event: 'Sept 22, 2020',
+        notes: 'notes',
+        rating: 5,
+        recipe_id: '1'
+      });
+
+    return await request(app)
+      .get('/api/v1/logs/1')
       .then(res => {
         expect(res.body).toEqual({
           id: expect.any(String),
