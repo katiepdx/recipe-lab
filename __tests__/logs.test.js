@@ -36,4 +36,29 @@ describe('Log model', () => {
       });
   });
 
+  it('reads all logs for recipes', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
+    
+    return request(app)
+      .post('/api/v1/logs')
+      .send(({
+        date_of_event: 'Sept 22, 2020',
+        notes: 'notes',
+        rating: 5,
+        recipe_id: '1'
+      }))
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+          date_of_event: 'Sept 22, 2020',
+          notes: 'notes',
+          rating: 5,
+          recipe_id: '1'
+        });
+      });
+  });
 });
