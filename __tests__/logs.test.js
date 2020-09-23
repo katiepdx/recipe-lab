@@ -15,6 +15,12 @@ describe('Log model', () => {
   });
 
   it('creates a log for a recipe', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
+    
     return request(app)
       .post('/api/v1/logs')
       .send(({
