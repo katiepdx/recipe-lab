@@ -5,17 +5,16 @@ const app = require('../lib/app');
 const Recipe = require('../lib/models/recipe');
 
 describe('Log model', () => {
-  beforeEach(() => {
-    return pool.query(fs.readFileSync('./sql/setup.sql', 'utf-8'));
-  });
-
-  it('creates a log for a recipe', async() => {
-    await Promise.all([
+  beforeEach(async() => {
+    pool.query(fs.readFileSync('./sql/setup.sql', 'utf-8'));
+    return await Promise.all([
       { name: 'cookies', directions: [] },
       { name: 'cake', directions: [] },
       { name: 'pie', directions: [] }
     ].map(recipe => Recipe.insert(recipe)));
-    
+  });
+
+  it('creates a log for a recipe', async() => {
     return request(app)
       .post('/api/v1/logs')
       .send(({
@@ -36,12 +35,6 @@ describe('Log model', () => {
   });
 
   it('reads all logs for recipes', async() => {
-    await Promise.all([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
-    ].map(recipe => Recipe.insert(recipe)));
-    
     await request(app)
       .post('/api/v1/logs')
       .send({
@@ -64,12 +57,6 @@ describe('Log model', () => {
   });
 
   it('gets one log by id', async() => {
-    await Promise.all([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
-    ].map(recipe => Recipe.insert(recipe)));
-    
     await request(app)
       .post('/api/v1/logs')
       .send({
@@ -93,12 +80,6 @@ describe('Log model', () => {
   });
 
   it('updates one log by id', async() => {
-    await Promise.all([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
-    ].map(recipe => Recipe.insert(recipe)));
-  
     // create a log
     await request(app)
       .post('/api/v1/logs')
@@ -130,12 +111,6 @@ describe('Log model', () => {
   });
 
   it('deletes one log by id', async() => {
-    await Promise.all([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
-    ].map(recipe => Recipe.insert(recipe)));
-  
     // create a log
     await request(app)
       .post('/api/v1/logs')
@@ -159,5 +134,4 @@ describe('Log model', () => {
         });
       });
   });
-
 });
