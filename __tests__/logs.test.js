@@ -91,4 +91,73 @@ describe('Log model', () => {
         });
       });
   });
+
+  it('updates one log by id', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
+  
+    // create a log
+    await request(app)
+      .post('/api/v1/logs')
+      .send({
+        date_of_event: 'Sept 22, 2020',
+        notes: 'notes',
+        rating: 5,
+        recipe_id: '1'
+      });
+    
+    // update log
+    return await request(app)
+      .put('/api/v1/logs/1')
+      .send({
+        date_of_event: 'Sept 22, 2020',
+        notes: 'more notes',
+        rating: 100,
+        recipe_id: '1'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+          date_of_event: 'Sept 22, 2020',
+          notes: 'more notes',
+          rating: 100,
+          recipe_id: '1'
+        });
+      });
+  });
+
+  it('deletes one log by id', async() => {
+    await Promise.all([
+      { name: 'cookies', directions: [] },
+      { name: 'cake', directions: [] },
+      { name: 'pie', directions: [] }
+    ].map(recipe => Recipe.insert(recipe)));
+  
+    // create a log
+    await request(app)
+      .post('/api/v1/logs')
+      .send({
+        date_of_event: 'Sept 22, 2020',
+        notes: 'to delete',
+        rating: 100,
+        recipe_id: '1'
+      });
+    
+    // delete log
+    return await request(app)
+      .delete('/api/v1/logs/1')
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+          date_of_event: 'Sept 22, 2020',
+          notes: 'to delete',
+          rating: 100,
+          recipe_id: '1'
+        });
+      });
+  });
+
 });
